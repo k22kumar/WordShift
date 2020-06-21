@@ -3,29 +3,44 @@ const wordShift = {};
 
 // init
 wordShift.init = () => {
-    // function that gets number of words
-    // function that gets number of characters
-    wordShift.wordCharCount();
+    wordShift.countUserInput();
+    // wordShift.countText('userOutput','afterWord', 'afterChar');
 }
 
-//function that counts words and characters
-wordShift.wordCharCount = () => {
-    document.getElementById('userInput').addEventListener('input', () => {
-        let input = document.getElementById('userInput').value;
-        console.log(input);
-        // to count characters, split the string by whitespacees and return length of joned substring
-        const charCount = input.split(" ").join("").length;
-        // to count words, first remove the white spaces from both ends of string
-        input.replace(/(^\s*)|(\s*$)/gi, "");
-        // second reduces all multi spaces to a single space
-        input.replace(/[ ]{2,}/gi, " ");
-        // last remove indents on new paragraphs.
-        input.replace(/\n /, "\n"); 
-        const wordCount = input.length;
 
-        console.log("words: ", wordCount);
-        console.log("chars: ", charCount);
+wordShift.countUserInput = () => {
+    document.getElementById('userInput').addEventListener('input', () => {
+        wordShift.countText('userInput','beforeWord', 'beforeChar');
     });
+}
+
+// function that counts and updates a specfic text (input/output of user text)
+wordShift.countText = (textSource, wordOutput, charOutput) => {
+    document.getElementById(wordOutput).innerHTML=`Words: ${wordShift.wordCount(textSource)}`;
+    document.getElementById(charOutput).innerHTML=`Characters: ${wordShift.charCount(textSource)}`;
+}
+
+
+
+
+//function that counts words and characters accepts a string
+wordShift.wordCount = (textInput) => {
+    const input = document.getElementById(textInput).value;
+    // To count words, trim the ends of the input,
+    // then using regex split on one or more spaces and return length
+    let wordCount = 0;
+    // if string is = "" then number of words is 0 
+    input.trim() === "" ?
+        wordCount = 0:
+        wordCount = input.trim().split(/\s+/).length;
+    return wordCount
+}
+
+wordShift.charCount = (textInput) => {
+    let input = document.getElementById(textInput).value;
+    // to count characters, split the string by whitespacees and return length of joned substring
+    const charCount = input.split(" ").join("").length;
+    return charCount;
 }
 
 // document ready
