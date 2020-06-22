@@ -45,8 +45,21 @@ wordShift.charCount = (textInput) => {
 // function that takes a string and optimizes it for less characters
 wordShift.optimize = () => {
     document.getElementById('optimize').addEventListener('click', () => {
-        console.log("clicked");
+    // get the string
+    // break it into words
+    const paragraph = document.getElementById('userInput').value.trim().split(/\s+/);
+    console.log(paragraph);
+    for
+    // for each word need to remove special characters (commas periods etc) BEFORE sending request
+    // for each word that is more than 3 characters make api request for shorter word
+    // replace that word 
+    
     });
+
+wordShift.getNewWords = (word)=> {
+    console.log("word to replace: " , word);
+
+}
 }
 
 // document ready
