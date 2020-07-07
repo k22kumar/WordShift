@@ -46,13 +46,26 @@ wordShift.charCount = (textInput) => {
 wordShift.optimize = () => {
     document.getElementById('optimize').addEventListener('click', () => {
     // get the string
-    // break it into words
+    // break it into "words" anything that has spaces
     const paragraph = document.getElementById('userInput').value.trim().split(/\s+/);
     console.log(paragraph);
-    for
-    // for each word need to remove special characters (commas periods etc) BEFORE sending request
-    // for each word that is more than 3 characters make api request for shorter word
-    // replace that word 
+    
+    // for each word if it is in the EDITABLE format:
+    //  [a-z] (0 or 1 instance of "-") OR (0 or 1 instance of "'") followed by [a-z]
+    // if its also greater than 3 characters
+    // store that into an object in modifier array like so:
+    //  { maybe attach the original word
+    //      edit: true;
+    //      wordList: [] list of words from thesauras api SORTED
+    //      leftPunc: "(" example
+    //      rightPunc: "." example
+    // }
+    //  if does not meet EDITABLE criteria then set edit to false in that array
+    //  
+    // once all api calls to get the wordLists have been done,
+    // for each in editable array if edit !== true then begin a sentence string
+    //  if edit === true stop and return a ptag with sentence string init
+    //  THEN return a option with the first option as the lowest word and last is the original word
     
     });
 
