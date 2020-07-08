@@ -45,6 +45,7 @@ wordShift.charCount = (textInput) => {
 // function that takes a string and optimizes it for less characters
 wordShift.optimize = () => {
     document.getElementById('optimize').addEventListener('click', () => {
+    wordShift.getNewWords("revealed");
     // get the string
     // break it into "words" anything that has spaces
     const paragraph = document.getElementById('userInput').value.trim().split(/\s+/);
@@ -142,9 +143,13 @@ wordShift.breakDown = (word) => {
     return brokenDownWord;
 }
 
-wordShift.getNewWords = (word)=> {
-    console.log("word to replace: " , word);
-
+// theis function calls the datamuse api and returns an array of synonyms of the word requested
+wordShift.getNewWords = (word) => {
+    const synonymResponse = fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
+        const synonymJSON = synonymResponse.json;
+        console.log("sunoasfd",synonymJSON);
+    console.log("sunoasfd", synonymResponse);
+        return synonymJSON;
 }
 
 }
