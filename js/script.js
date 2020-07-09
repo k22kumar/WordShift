@@ -67,7 +67,7 @@ wordShift.optimize = () => {
                 leftPunc: brokenDownWord[0],
                 cleanWord: brokenDownWord[1],
                 rightPunc: brokenDownWord[2],
-                wordList: []
+                wordList: wordShift.getNewWords(brokenDownWord[1])
             }
         } else {
             editObj = {
@@ -144,13 +144,13 @@ wordShift.breakDown = (word) => {
 }
 
 // theis function calls the datamuse api and returns an array of synonyms of the word requested
-wordShift.getNewWords = (word) => {
-    const synonymResponse = fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
-        const synonymJSON = synonymResponse.json;
-        console.log("sunoasfd",synonymJSON);
-    console.log("sunoasfd", synonymResponse);
-        return synonymJSON;
+wordShift.getNewWords = async (word) => {
+    const synonymResponse = await fetch(`https://api.datamuse.com/words?rel_syn=${word}`);
+    const jsonResponse = await synonymResponse.json();
+    console.log(jsonResponse);
+    return jsonResponse;
 }
+
 
 }
 
