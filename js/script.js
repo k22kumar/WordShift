@@ -49,7 +49,6 @@ wordShift.charCount = (textInput) => {
 // function that takes a string and optimizes it for less characters
 wordShift.optimize = () => {
   document.getElementById("optimize").addEventListener("click", () => {
-    wordShift.getNewWords("revealed");
     // get the string
     // break it into "words" anything that has spaces
     const paragraph = document
@@ -58,7 +57,7 @@ wordShift.optimize = () => {
       .split(/\s+/);
     const pattern = /[A-Za-z]+[-]?\'?[A-Za-z]+/;
 
-    // creates a new array "editable" that
+    // creates a new array "editable" that stores all words and their special info
     wordShift.editable = paragraph.map((word) => {
       // for each word if it is in the EDITABLE format:
       //  [a-z] (0 or 1 instance of "-") OR (0 or 1 instance of "'") followed by [a-z]
@@ -67,16 +66,7 @@ wordShift.optimize = () => {
       let editObj = {};
       const brokenDownWord = wordShift.breakDown(word);
       if (brokenDownWord[1].length > 3 && pattern.test(word)) {
-        
-
-        let synArr = [];
-
-        wordShift
-          .getNewWords(brokenDownWord[1])
-          .then((synonym) => {
-              editObj.wordList = synonym;
-              editObj.wordList.sort((a, b) => a.word.length - b.word.length);
-                });
+          
         editObj = {
           edit: true,
           word: word,
@@ -92,6 +82,33 @@ wordShift.optimize = () => {
       }
       return editObj;
     });
+
+    // create an array of promises each holding the potential wordList for a specfic word at a index
+    let promiseArray = [];
+    for(let i = 0; i<wordShift.editable.length; i++){
+      if(wordShift.editable[i].edit === true) {
+        
+        promiseArray.push(wordShift.getNewWords(i, wordShift.editable[i].cleanWord));
+      }
+    }
+
+    Promise.all(promiseArray).then( (response) => {
+      response.map((wordListResponse) => {
+        // this returns a wordList response array where the first value is the 
+        // specfic index of the word that wordList belongs to
+        const wordindex = wordListResponse[0];
+        // if the wordlist has more then one word, then add the original
+        // if (wordListResponse[0] > 0) {
+          // wordListResponse[1].push(wordShift.editable[wordindex].cleanWord);
+        // }
+        
+        wordShift.editable[wordindex].wordList = wordListResponse[1].sort(
+          (a, b) => a.word.length - b.word.length
+        );
+      })
+      wordShift.displayNewParagraph();
+    });
+
     console.log(wordShift.editable);
 
     // store that into an object in modifier array like so:
@@ -111,8 +128,7 @@ wordShift.optimize = () => {
     //  if edit === true check if it has a wordList of length > 0
     // if it does then stop and return a ptag with sentence string init
     //  THEN return a option with the first option as the lowest word and last is the original word
-    // console.log('adsf', wordShift.editable);
-    wordShift.displayNewParagraph();
+      
 })}; // Optimize end
 
   // this function breaks a word down into three components to seperate any potential puncuation marks that might be present in order to make a api call with the word with no puncuation
@@ -165,14 +181,15 @@ wordShift.optimize = () => {
   };
 
   // theis function calls the datamuse api and returns an array of synonyms of the word requested
-  wordShift.getNewWords = async (word) => {
+  wordShift.getNewWords = async (index, word) => {
     try {
       let synArr = [];
       const synonymResponse = await fetch(
         `https://api.datamuse.com/words?rel_syn=${word}`
       );
       const jsonResponse = await synonymResponse.json();
-      return jsonResponse;
+      // return the index and the jsonResponse
+      return [index, jsonResponse];
     } catch (err) {
       console.log(err);
     }
@@ -182,7 +199,7 @@ wordShift.optimize = () => {
     let paragraph ="";
     wordShift.editable.map((editObj) => {
       if (editObj.edit === false) {
-        paragraph += editObj.word;
+        paragraph = paragraph + " " + editObj.word;
       } else {
         let newWord = "";
         console.log("last word",editObj);
@@ -192,8 +209,8 @@ wordShift.optimize = () => {
         console.log(Object.keys(editObj).length);
         editObj.wordList.length === 0 ?
           newWord = editObj.word :
-          newWord = editObj.wordList[0];
-          paragraph += newWord;
+          newWord = editObj.wordList[0].word;
+          paragraph = paragraph + " " + newWord;
         
       }
     });
