@@ -203,13 +203,12 @@ wordShift.optimize = () => {
       } else {
         let newWord = "";
         console.log("last word",editObj);
-        console.log("wordy: ", editObj.word);
         // console.log("last word1", editObj["wordList"]);
         // console.log("last word2", editObj.wordList);
         console.log(Object.keys(editObj).length);
         editObj.wordList.length === 0 ?
           newWord = editObj.word :
-          newWord = editObj.wordList[0].word;
+          newWord = editObj.leftPunc + editObj.wordList[0].word + editObj.rightPunc;
           paragraph = paragraph + " " + newWord;
         
       }
