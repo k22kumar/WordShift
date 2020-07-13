@@ -102,7 +102,12 @@ wordShift.optimize = () => {
           // wordListResponse[1].push(wordShift.editable[wordindex].cleanWord);
         // }
         
-        wordShift.editable[wordindex].wordList = wordListResponse[1].sort(
+        wordShift.editable[wordindex].wordList = wordListResponse[1];
+        // add the original word to wordlist
+        wordShift.editable[wordindex].wordList.push({
+          word: wordShift.editable[wordindex].cleanWord 
+        });
+        wordShift.editable[wordindex].wordList.sort(
           (a, b) => a.word.length - b.word.length
         );
       })
