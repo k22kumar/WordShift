@@ -228,8 +228,10 @@ wordShift.optimize = () => {
           wordChoice.className = "wordChoice";
           for (let i = 0; i < editObj.wordList.length; i++) {
             const option = document.createElement("option");
-            option.value = editObj.wordList[i].word;
-            option.text = editObj.wordList[i].word;
+            option.value =
+              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
+            option.text =
+              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
             wordChoice.appendChild(option);
           }
           document.getElementById("userOutput").appendChild(wordChoice);
