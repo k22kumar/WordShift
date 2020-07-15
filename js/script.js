@@ -108,7 +108,7 @@ wordShift.optimize = () => {
           word: wordShift.editable[wordindex].cleanWord 
         });
         wordShift.editable[wordindex].wordList.sort(
-          (a, b) => a.word.length - b.word.length
+          (a, b) => a.word.trim().length - b.word.trim().length
         );
       })
       wordShift.displayNewParagraph();
@@ -202,24 +202,47 @@ wordShift.optimize = () => {
 
   wordShift.displayNewParagraph = () => {
     let paragraph ="";
-    wordShift.editable.map((editObj) => {
+    wordShift.editable.map((editObj, index) => {
       if (editObj.edit === false) {
         paragraph = paragraph + " " + editObj.word;
       } else {
+        // if paragraph !== "" insert paragraph, reset the pargraph back to "" then make an option and insert that option
+        if(paragraph !== ""){
+          const ptag = document.createElement("p");
+          ptag.className = "editableP";
+          const node = document.createTextNode(paragraph);
+          ptag.appendChild(node);
+          document.getElementById("userOutput").appendChild(ptag);
+          paragraph = "";
+        }
+
         let newWord = "";
-        console.log("last word",editObj);
+        // console.log("last word",editObj);
         // console.log("last word1", editObj["wordList"]);
         // console.log("last word2", editObj.wordList);
-        console.log(Object.keys(editObj).length);
+        // console.log(Object.keys(editObj).length);
         editObj.wordList.length === 0 ?
           newWord = editObj.word :
           newWord = editObj.leftPunc + editObj.wordList[0].word + editObj.rightPunc;
           paragraph = paragraph + " " + newWord;
-        
+
+          const wordChoice = document.createElement("select");
+          wordChoice.className = "wordChoice";
+          for (let i = 0; i < editObj.wordList.length; i++) {
+            const option = document.createElement("option");
+            option.value = editObj.wordList[i].word;
+            option.text = editObj.wordList[i].word;
+            wordChoice.appendChild(option);
+          }
+          document.getElementById("userOutput").appendChild(wordChoice);
       }
     });
     console.log(paragraph);
   };
+
+  wordShift.displayEditable = () => {
+
+  }
 
 
 // document ready
