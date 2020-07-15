@@ -288,3 +288,12 @@ img {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+
+.userOutput {
+  width: 80%;
+}
+
+.editableP {
+  display: inline;
+  word-wrap: break-word;
+}
