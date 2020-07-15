@@ -210,7 +210,7 @@ wordShift.optimize = () => {
         if(paragraph !== ""){
           const ptag = document.createElement("p");
           ptag.className = "editableP";
-          const node = document.createTextNode(paragraph);
+          const node = document.createTextNode(paragraph + " ");
           ptag.appendChild(node);
           document.getElementById("userOutput").appendChild(ptag);
           paragraph = "";
@@ -221,11 +221,9 @@ wordShift.optimize = () => {
         // console.log("last word1", editObj["wordList"]);
         // console.log("last word2", editObj.wordList);
         // console.log(Object.keys(editObj).length);
-        editObj.wordList.length === 0 ?
-          newWord = editObj.word :
-          newWord = editObj.leftPunc + editObj.wordList[0].word + editObj.rightPunc;
-          paragraph = paragraph + " " + newWord;
-
+         if(editObj.wordList.length < 2) {
+           paragraph = paragraph + " " + editObj.word;
+         } else {
           const wordChoice = document.createElement("select");
           wordChoice.className = "wordChoice";
           for (let i = 0; i < editObj.wordList.length; i++) {
@@ -235,6 +233,7 @@ wordShift.optimize = () => {
             wordChoice.appendChild(option);
           }
           document.getElementById("userOutput").appendChild(wordChoice);
+         }
       }
     });
     console.log(paragraph);
