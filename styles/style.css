@@ -293,7 +293,12 @@ img {
   width: 80%;
 }
 
-.editableP {
+.editable {
   display: inline;
   word-wrap: break-word;
+  text-align: center;
+}
+
+.editable option {
+  text-align: center;
 }

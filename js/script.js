@@ -72,7 +72,7 @@ wordShift.optimize = () => {
           word: word,
           leftPunc: brokenDownWord[0],
           cleanWord: brokenDownWord[1],
-          rightPunc: brokenDownWord[2]
+          rightPunc: brokenDownWord[2] + " "
         };
       } else {
         editObj = {
@@ -108,10 +108,10 @@ wordShift.optimize = () => {
           word: wordShift.editable[wordindex].cleanWord 
         });
         wordShift.editable[wordindex].wordList.sort(
-          (a, b) => a.word.trim().length - b.word.trim().length
+          (a, b) => a.word.split(" ").join("").length - b.word.split(" ").join("").length
         );
       })
-      wordShift.displayNewParagraph();
+      wordShift.displayEditable();
     });
 
     console.log(wordShift.editable);
@@ -200,7 +200,7 @@ wordShift.optimize = () => {
     }
   };
 
-  wordShift.displayNewParagraph = () => {
+  wordShift.displayEditable = () => {
     let paragraph ="";
     wordShift.editable.map((editObj, index) => {
       if (editObj.edit === false) {
@@ -209,23 +209,26 @@ wordShift.optimize = () => {
         // if paragraph !== "" insert paragraph, reset the pargraph back to "" then make an option and insert that option
         if(paragraph !== ""){
           const ptag = document.createElement("p");
-          ptag.className = "editableP";
+          ptag.className = "editable";
           const node = document.createTextNode(paragraph + " ");
           ptag.appendChild(node);
-          document.getElementById("userOutput").appendChild(ptag);
+          document.getElementById("userEditable").appendChild(ptag);
           paragraph = "";
         }
 
-        let newWord = "";
-        // console.log("last word",editObj);
-        // console.log("last word1", editObj["wordList"]);
-        // console.log("last word2", editObj.wordList);
-        // console.log(Object.keys(editObj).length);
          if(editObj.wordList.length < 2) {
+           
            paragraph = paragraph + " " + editObj.word;
+           const ptag = document.createElement("p");
+           ptag.className = "editable";
+           const node = document.createTextNode(paragraph + " ");
+           ptag.appendChild(node);
+           document.getElementById("userEditable").appendChild(ptag);
+           paragraph = "";
+
          } else {
           const wordChoice = document.createElement("select");
-          wordChoice.className = "wordChoice";
+          wordChoice.className = "editable";
           for (let i = 0; i < editObj.wordList.length; i++) {
             const option = document.createElement("option");
             option.value =
@@ -234,16 +237,39 @@ wordShift.optimize = () => {
               editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
             wordChoice.appendChild(option);
           }
-          document.getElementById("userOutput").appendChild(wordChoice);
+          document.getElementById("userEditable").appendChild(wordChoice);
          }
       }
     });
-    console.log(paragraph);
+    wordShift.displayNewParagraph();
   };
 
-  wordShift.displayEditable = () => {
+  wordShift.displayNewParagraph = () => {
+    // go through node by node, 
+    const childNodes = document.querySelectorAll(".editable");
+    console.log(childNodes);
+    let newParagraph = ""
+    for(let i=0; i< childNodes.length; i++){
+      newParagraph += childNodes[i].value || childNodes[i].textContent;
+    }
+    console.log(wordShift.autoCapitalize(newParagraph));
+    const ptag = document.createElement("p");
+    ptag.className = "output";
+    const node = document.createTextNode(newParagraph);
+    ptag.appendChild(node);
+    document.getElementById("userOutput").appendChild(ptag);
+    console.log(newParagraph);
+    console.log(wordShift.editable);
 
+    // grab the text from ptag OR the selected value of option
+    // add them to sentence string
+    // put a ptag with that sentence onto div in screen
+    // add a copy and paste button
   }
+  
+wordShift.autoCapitalize = (text) => {
+
+}
 
 
 // document ready
