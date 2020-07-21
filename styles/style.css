@@ -254,6 +254,10 @@ input[type="submit"] {
   border-radius: 0;
 }
 
+textarea {
+  resize: none;
+}
+
 img {
   max-width: 100%;
   display: block;

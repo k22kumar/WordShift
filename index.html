@@ -21,7 +21,9 @@
                     <p id="beforeChar">Characters: 0</p>
                 </li>
             </ul>
+            <label for="userInput">Insert paragraph to optimize</label>
             <textarea name="userInput" id="userInput" spellcheck="true" cols="70" rows="10"></textarea>
+            <button class="minMax" id="minMax">Minimize</button>
             <button class="optimize" id="optimize">Optimize</button>
         </section>
         <section class="flexParent">
@@ -30,13 +32,16 @@
         <section class="flexParent flexColumn">
             <ul class="flexParent">
                 <li class="afterWord">
-                    <p id="afterWord">Words: </p>
+                    <p id="afterWord"></p>
                 </li>
                 <li class="afterChar">
-                    <p id="afterChar">Characters: </p>
+                    <p id="afterChar"></p>
                 </li>
             </ul>
-            <div class="userOutput" id="userOutput"></div>
+            <div class="outputContainer" id="outputContainer">
+            </div>
+            <button class="copy" id="copy">Copy</button>
+            
         </section>
     </main>
     <footer>

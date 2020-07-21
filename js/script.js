@@ -1,12 +1,15 @@
-// Word shift is an app that optimizes a paragraph to lower character counts
+// Word shift is an app that optimizes a paragraph to lower or higher character counts
 const wordShift = {};
 
 // init
 wordShift.init = () => {
   wordShift.countUserInput();
-  // wordShift.countText('userOutput','afterWord', 'afterChar');
+  wordShift.minMax();
   wordShift.optimize();
+  wordShift.onSelectHandler();
 };
+// Assume user wants to minimize the character count
+wordShift.minimize = true;
 
 // function that counts the user text field
 wordShift.countUserInput = () => {
@@ -15,7 +18,7 @@ wordShift.countUserInput = () => {
   });
 };
 
-// function that counts and updates a specfic text (input/output of user text)
+// function that counts and updates a specfic text (input/output of user text) with the word and character count
 wordShift.countText = (textSource, wordOutput, charOutput) => {
   document.getElementById(wordOutput).innerHTML = `Words: ${wordShift.wordCount(
     textSource
@@ -27,7 +30,9 @@ wordShift.countText = (textSource, wordOutput, charOutput) => {
 
 //function that counts and returns the number of words
 wordShift.wordCount = (textInput) => {
-  const input = document.getElementById(textInput).value;
+  const input =
+    document.getElementById(textInput).value ||
+    document.getElementById(textInput).textContent;
   // To count words, trim the ends of the input,
   // then using regex split on one or more spaces and return length
   let wordCount = 0;
@@ -40,15 +45,26 @@ wordShift.wordCount = (textInput) => {
 
 // function that counts and returns the number of characters
 wordShift.charCount = (textInput) => {
-  let input = document.getElementById(textInput).value;
+  const input =
+    (document.getElementById(textInput).value ||
+    document.getElementById(textInput).textContent);
   // to count characters, split the string by whitespacees and return length of joned substring
   const charCount = input.split(" ").join("").length;
   return charCount;
 };
 
-// function that takes a string and optimizes it for less characters
+// function to remember if user wants to minimize or maximize their character count
+wordShift.minMax = () => {
+  document.getElementById("minMax").addEventListener("click", () => {
+    wordShift.minimize = !wordShift.minimize;
+    console.log(wordShift.minimize);
+  });
+}
+
+// function that takes a string and optimizes it for more or less characters
 wordShift.optimize = () => {
   document.getElementById("optimize").addEventListener("click", () => {
+    document.getElementById("userEditable").innerHTML = "";
     // get the string
     // break it into "words" anything that has spaces
     const paragraph = document
@@ -65,7 +81,12 @@ wordShift.optimize = () => {
       // console.log(word, word.length > 3 && pattern.test(word));
       let editObj = {};
       const brokenDownWord = wordShift.breakDown(word);
-      if (brokenDownWord[1].length > 3 && pattern.test(word)) {
+      let minLength = 3;
+      if(!wordShift.minimize) {
+        console.log(wordShift.minimize);
+        minLength = 2;
+      }
+      if (brokenDownWord[1].length > minLength && pattern.test(word)) {
           
         editObj = {
           edit: true,
@@ -91,7 +112,7 @@ wordShift.optimize = () => {
         promiseArray.push(wordShift.getNewWords(i, wordShift.editable[i].cleanWord));
       }
     }
-
+    wordShift.countText("userInput", "beforeWord", "beforeChar");
     Promise.all(promiseArray).then( (response) => {
       response.map((wordListResponse) => {
         // this returns a wordList response array where the first value is the 
@@ -193,6 +214,9 @@ wordShift.optimize = () => {
         `https://api.datamuse.com/words?rel_syn=${word}`
       );
       const jsonResponse = await synonymResponse.json();
+      
+      console.log("list", jsonResponse);
+
       // return the index and the jsonResponse
       return [index, jsonResponse];
     } catch (err) {
@@ -246,30 +270,55 @@ wordShift.optimize = () => {
 
   wordShift.displayNewParagraph = () => {
     // go through node by node, 
+    document.getElementById("outputContainer").innerHTML = "";
     const childNodes = document.querySelectorAll(".editable");
     console.log(childNodes);
     let newParagraph = ""
     for(let i=0; i< childNodes.length; i++){
       newParagraph += childNodes[i].value || childNodes[i].textContent;
     }
-    console.log(wordShift.autoCapitalize(newParagraph));
     const ptag = document.createElement("p");
     ptag.className = "output";
     const node = document.createTextNode(newParagraph);
     ptag.appendChild(node);
-    document.getElementById("userOutput").appendChild(ptag);
+    document.getElementById("outputContainer").appendChild(ptag);
     console.log(newParagraph);
-    console.log(wordShift.editable);
-
-    // grab the text from ptag OR the selected value of option
-    // add them to sentence string
-    // put a ptag with that sentence onto div in screen
-    // add a copy and paste button
+    wordShift.countText("outputContainer", "afterWord", "afterChar");
   }
   
-wordShift.autoCapitalize = (text) => {
-
+wordShift.onSelectHandler = () => {
+  const parent = document.querySelector("#userEditable");
+  parent.addEventListener("change", () => {
+    wordShift.displayNewParagraph();
+  });
 }
+
+wordShift.copyToClipBoard = (elementId) => {
+    const input = document.getElementById(elementId);
+    let isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+    if (isiOSDevice) {
+      const editable = input.contentEditable;
+      const readOnly = input.readOnly;
+
+      input.contentEditable = true;
+      input.readOnly = false;
+
+      var range = document.createRange();
+      range.selectNodeContents(input);
+
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      input.setSelectionRange(0, 999999);
+      input.contentEditable = editable;
+      input.readOnly = readOnly;
+    } else {
+      input.select();
+    }
+    document.execCommand("copy");
+};
 
 
 // document ready
