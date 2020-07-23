@@ -254,6 +254,10 @@ input[type="submit"] {
   border-radius: 0;
 }
 
+textarea {
+  resize: none;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -293,7 +297,12 @@ img {
   width: 80%;
 }
 
-.editableP {
+.editable {
   display: inline;
   word-wrap: break-word;
+  text-align: center;
+}
+
+.editable option {
+  text-align: center;
 }

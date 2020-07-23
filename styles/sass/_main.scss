@@ -1,7 +1,11 @@
 .userOutput {
     width: 80%;
 }
-.editableP {
+.editable {
     display:inline;
- word-wrap: break-word;
+    word-wrap: break-word;
+    text-align: center;
+    option {
+        text-align: center;
+    }
 }
