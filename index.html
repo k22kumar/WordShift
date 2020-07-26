@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Word Shift</title>
+    <!-- FONT AWESOME -->
+    <script src="https://kit.fontawesome.com/63b84c9d87.js" crossorigin="anonymous"></script>
     <!-- link to custom css -->
     <link rel="stylesheet" href="./styles/style.css">
 </head>
@@ -21,9 +23,11 @@
                     <p id="beforeChar">Characters: 0</p>
                 </li>
             </ul>
-            <label for="userInput">Insert paragraph to optimize</label>
+            <label for="userInput">WordShift is an app to increase or decrease the character count of a paragraph. Simply type or paste a paragraph into the textbox, change the direction of the arrow up for more characters or down for less, and hit optimize. Not all suggestions will fit your needs so make sure to double check for grammar!</label>
             <textarea name="userInput" id="userInput" spellcheck="true" cols="70" rows="10"></textarea>
-            <button class="minMax" id="minMax">Minimize</button>
+            <button class="minMax" id="minMax" aria-label="Click to toggle between lower or higher character counts. Default is minimum.">
+                <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
+            </button>
             <button class="optimize" id="optimize">Optimize</button>
         </section>
         <section class="flexParent">
