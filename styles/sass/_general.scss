@@ -1,10 +1,20 @@
+html {
+    font-size: 62.5%;
+}
+
+header {
+    margin: 25px 0;
+}
+
 p, ul, li, h1, h2, h3 {
     margin: 0;
     padding: 0;
 }
 
 h1 {
+    font-size: 3.5rem;
     text-align: center;
+    font-family: 'Rock Salt', cursive;
 }
 
 ul {
@@ -23,11 +33,18 @@ input[type="submit"]{
 
 textarea {
     resize: none;
+    width: 100%;
 }
 
 img {
     max-width: 100%;
     display: block;
+}
+
+p, textarea, label, .editable, button {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 1.7rem;
+    line-height: 1.5;
 }
 
 .wrapper {
