@@ -118,12 +118,17 @@ wordShift.optimize = () => {
         // if the wordlist has more then one word, then add the original
         wordShift.editable[wordindex].wordList = wordListResponse[1];
         // add the original word to wordlist
-        wordShift.editable[wordindex].wordList.push({
-          word: wordShift.editable[wordindex].cleanWord 
-        });
-        wordShift.editable[wordindex].wordList.sort(
-          (a, b) => a.word.split(" ").join("").length - b.word.split(" ").join("").length
-        );
+        wordShift.editable[wordindex].wordList.push(wordShift.editable[wordindex].cleanWord);
+        
+        if(wordShift.minimize === true) {
+          wordShift.editable[wordindex].wordList.sort((a, b) => {
+            return a.split(" ").join("").length - b.split(" ").join("").length
+          });
+        } else {
+          wordShift.editable[wordindex].wordList.sort((a, b) => {
+            return b.split(" ").join("").length - a.split(" ").join("").length
+          });
+        }
       })
       wordShift.displayEditable();
     });
@@ -213,7 +218,11 @@ wordShift.optimize = () => {
         : (jsonResponse = jsonResponse.filter((synonym) => {
             return synonym.word.length >= word.length;
           }));
-          
+
+      jsonResponse = jsonResponse.map((wordObj) => {
+        return wordObj.word
+      })
+
       if(index > 0) {
         // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
         console.log("famWOrd: ", wordShift.editable[index].word);
@@ -221,10 +230,10 @@ wordShift.optimize = () => {
         console.log("prevPunc", prevPunc);
         if(prevPunc === "!" || prevPunc === "?" || prevPunc === "."){
           console.log("BINGO " , prevPunc);
-          console.log("sup1")
+          console.log(jsonResponse);
           jsonResponse = jsonResponse.map((synonym) => {
             console.log("sup2")
-            console.log("char is: " , synonym.word[0]);
+            console.log("char is: " , synonym[0]);
             synonym.charAt(0).toUpperCase();
           })
         }
@@ -268,9 +277,9 @@ wordShift.optimize = () => {
           for (let i = 0; i < editObj.wordList.length; i++) {
             const option = document.createElement("option");
             option.value =
-              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
+              editObj.leftPunc + editObj.wordList[i] + editObj.rightPunc;
             option.text =
-              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
+              editObj.leftPunc + editObj.wordList[i] + editObj.rightPunc;
             wordChoice.appendChild(option);
           }
           document.getElementById("userEditable").appendChild(wordChoice);
