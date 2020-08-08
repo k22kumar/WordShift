@@ -37,7 +37,7 @@ button {
   text-decoration: none;
   font-size: inherit;
   font-family: inherit;
-    &.optimize {
+    &.optimize, &.minmax, &.copy {
     font-weight: 600;
     color: $normalFont;
     text-transform: uppercase;
