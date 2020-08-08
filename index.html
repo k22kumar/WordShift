@@ -17,6 +17,10 @@
     </header>
     <main class="wrapper">
         <section class="flexParent flexColumn">
+            <p>WordShift is an app to increase or decrease the character count of a paragraph. Simply type or paste a paragraph into
+            the textbox, change the direction of the arrow up for more characters or down for less, and hit optimize. Not all
+            suggestions will fit your needs so make sure to double check for grammar!</p>
+            <label for="userInput">Type or paste your text to get started!</label>
             <ul class="flexParent">
                 <li class="beforeWord">
                     <p id="beforeWord">Words: 0</p>
@@ -25,10 +29,6 @@
                     <p id="beforeChar">Characters: 0</p>
                 </li>
             </ul>
-            <p>WordShift is an app to increase or decrease the character count of a paragraph. Simply type or paste a paragraph into
-            the textbox, change the direction of the arrow up for more characters or down for less, and hit optimize. Not all
-            suggestions will fit your needs so make sure to double check for grammar!</p>
-            <label for="userInput">Type or paste your text to get started!</label>
             <textarea name="userInput" id="userInput" spellcheck="true" rows="6" placeholder="Type or paste your paragraph to optimize here!"></textarea>
             <button class="flexParent minMax" id="minMax" aria-label="Click to toggle between lower or higher character counts. Default is minimum.">
                 <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
