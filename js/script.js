@@ -114,21 +114,34 @@ wordShift.optimize = () => {
       response.map((wordListResponse) => {
         // this returns a wordList response array where the first value is the 
         // specfic index of the word that wordList belongs to
-        const wordindex = wordListResponse[0];
+        const wordIndex = wordListResponse[0];
         // if the wordlist has more then one word, then add the original
-        wordShift.editable[wordindex].wordList = wordListResponse[1];
+        wordShift.editable[wordIndex].wordList = wordListResponse[1];
         // add the original word to wordlist
-        wordShift.editable[wordindex].wordList.push(wordShift.editable[wordindex].cleanWord);
+        wordShift.editable[wordIndex].wordList.push(wordShift.editable[wordIndex].cleanWord);
         
-        if(wordShift.minimize === true) {
-          wordShift.editable[wordindex].wordList.sort((a, b) => {
-            return a.split(" ").join("").length - b.split(" ").join("").length
+          wordShift.editable[wordIndex].wordList.sort((a, b) => {
+            if(wordShift.minimize === true){
+              return a.split(" ").join("").length - b.split(" ").join("").length
+            } else {
+              return b.split(" ").join("").length - a.split(" ").join("").length
+            }
           });
-        } else {
-          wordShift.editable[wordindex].wordList.sort((a, b) => {
-            return b.split(" ").join("").length - a.split(" ").join("").length
-          });
-        }
+          if (wordIndex > 0) {
+            // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
+            console.log("famWOrd: ", wordShift.editable[wordIndex].word);
+            const prevWord = wordShift.editable[wordIndex - 1].word;
+            const prevPunc = prevWord.charAt(prevWord.length - 1);
+            // console.log("prevPunc", prevPunc);
+            if (prevPunc === "!" || prevPunc === "?" || prevPunc === ".") {
+              
+              const capitalized = wordShift.editable[wordIndex].wordList.map((synonym) => {
+                synonym = synonym.charAt(0).toUpperCase() + synonym.slice(1);
+                return synonym;
+              });
+              wordShift.editable[wordIndex].wordList = capitalized;
+            }
+          }
       })
       wordShift.displayEditable();
     });
@@ -219,25 +232,8 @@ wordShift.optimize = () => {
             return synonym.word.length >= word.length;
           }));
 
-      jsonResponse = jsonResponse.map((wordObj) => {
-        return wordObj.word
-      })
-
-      if(index > 0) {
-        // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
-        console.log("famWOrd: ", wordShift.editable[index].word);
-        const prevPunc = wordShift.editable[index].word.charAt(word.length);
-        console.log("prevPunc", prevPunc);
-        if(prevPunc === "!" || prevPunc === "?" || prevPunc === "."){
-          console.log("BINGO " , prevPunc);
-          console.log(jsonResponse);
-          jsonResponse = jsonResponse.map((synonym) => {
-            console.log("sup2")
-            console.log("char is: " , synonym[0]);
-            synonym.charAt(0).toUpperCase();
-          })
-        }
-      }
+      jsonResponse = jsonResponse.map((wordObj) => {return wordObj.word})
+      
       // return the index and the jsonResponse
       return [index, jsonResponse];
     } catch (err) {
@@ -303,8 +299,8 @@ wordShift.optimize = () => {
     let node = document.createTextNode(newParagraph);
     ptag.appendChild(node);
     const copy = document.createElement("button");
-    ptag.className = "copy";
-    ptag.id = "copy";
+    copy.className = "copy";
+    copy.id = "copy";
     document.getElementById("outputContainer").appendChild(ptag);
     document.getElementById("outputContainer").appendChild(copy);
     node = document.createTextNode("Copy");
