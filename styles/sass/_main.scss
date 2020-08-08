@@ -10,3 +10,14 @@
         text-align: center;
     }
 }
+.minMax {
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 4rem;
+    i {
+        transition: all 0.3s;
+    }
+}
+.maximize {
+    transform: rotatez(180deg);
+}

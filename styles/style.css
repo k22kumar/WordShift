@@ -235,17 +235,108 @@ html {
   overflow: hidden;
 }
 
+html {
+  font-size: 62.5%;
+  background-color: #1e3d58;
+  color: white;
+}
+
+header {
+  margin: 25px 0;
+}
+
 p, ul, li, h1, h2, h3 {
   margin: 0;
   padding: 0;
 }
 
 h1 {
+  font-size: 3.5rem;
   text-align: center;
+  font-family: 'Rock Salt', cursive;
 }
 
 ul {
   list-style: none;
+}
+
+section {
+  margin: 20px 0;
+}
+
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button.optimize, button.minmax, button.copy {
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  padding: 1.25em 2em;
+  background: #ff8075;
+  border: 2px solid #c40021;
+  border-radius: 0.75em;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+
+button.optimize::before, button.minmax::before, button.copy::before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FE4A49;
+  border-radius: inherit;
+  -webkit-box-shadow: 0 0 0 2px #c40021, 0 0.625em 0 0 #ca748200;
+          box-shadow: 0 0 0 2px #c40021, 0 0.625em 0 0 #ca748200;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+          transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+
+button.optimize:hover, button.minmax:hover, button.copy:hover {
+  background: white;
+  -webkit-transform: translate(0, 0.25em);
+          transform: translate(0, 0.25em);
+}
+
+button.optimize:hover::before, button.minmax:hover::before, button.copy:hover::before {
+  -webkit-box-shadow: 0 0 0 2px #c40021, 0 0.5em 0 0 #ca748200;
+          box-shadow: 0 0 0 2px #c40021, 0 0.5em 0 0 #ca748200;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+          transform: translate3d(0, 0.5em, -1em);
+}
+
+button.optimize:active, button.minmax:active, button.copy:active {
+  background: white;
+  -webkit-transform: translate(0em, 0.75em);
+          transform: translate(0em, 0.75em);
+}
+
+button.optimize:active::before, button.minmax:active::before, button.copy:active::before {
+  -webkit-box-shadow: 0 0 0 2px #c40021, 0 0 #ca748200;
+          box-shadow: 0 0 0 2px #c40021, 0 0 #ca748200;
+  -webkit-transform: translate3d(0, 0, -1em);
+          transform: translate3d(0, 0, -1em);
 }
 
 textarea,
@@ -259,12 +350,25 @@ input[type="submit"] {
 }
 
 textarea {
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 12px;
+  border-bottom: 1px solid black;
   resize: none;
 }
 
 img {
   max-width: 100%;
   display: block;
+}
+
+p, textarea, label, .editable, button {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 1.7rem;
+  line-height: 1.5;
+  margin: 10px 0;
 }
 
 .wrapper {
@@ -309,4 +413,20 @@ img {
 
 .editable option {
   text-align: center;
+}
+
+.minMax {
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 4rem;
+}
+
+.minMax i {
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.maximize {
+  -webkit-transform: rotatez(180deg);
+          transform: rotatez(180deg);
 }

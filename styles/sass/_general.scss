@@ -1,14 +1,84 @@
+html {
+    font-size: 62.5%;
+    background-color: $bgColour;
+    color: $normalFont;
+}
+
+header {
+    margin: 25px 0;
+}
+
 p, ul, li, h1, h2, h3 {
     margin: 0;
     padding: 0;
 }
 
 h1 {
+    font-size: 3.5rem;
     text-align: center;
+    font-family: 'Rock Salt', cursive;
 }
 
 ul {
     list-style: none;
+}
+
+section {
+    margin: 20px 0;
+}
+
+button {
+    position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: inherit;
+  font-family: inherit;
+    &.optimize, &.minmax, &.copy {
+    font-weight: 600;
+    color: $normalFont;
+    text-transform: uppercase;
+    padding: 1.25em 2em;
+    background: $buttonBG;
+    border: 2px solid $buttonOutline;
+    border-radius: 0.75em;
+    transform-style: preserve-3d;
+    transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+    &::before {
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $buttonSide;
+      border-radius: inherit;
+      box-shadow: 0 0 0 2px $buttonOutline, 0 0.625em 0 0 $buttonShadow;
+      transform: translate3d(0, 0.75em, -1em);
+      transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+    }
+    &:hover {
+      background: white;
+      transform: translate(0, 0.25em);
+      &::before {
+        box-shadow: 0 0 0 2px $buttonOutline, 0 0.5em 0 0 $buttonShadow;
+        transform: translate3d(0, 0.5em, -1em);
+      }
+    }
+    &:active {
+      background: white;
+      transform: translate(0em, 0.75em);
+      &::before {
+        box-shadow: 0 0 0 2px $buttonOutline, 0 0 $buttonShadow;
+        transform: translate3d(0, 0, -1em);
+      }
+    }
+  }
 }
 
 textarea,
@@ -22,12 +92,25 @@ input[type="submit"]{
 }
 
 textarea {
+    width: 100%;
+    margin: 20px 0; 
+    padding: 10px 15px;
+    border: none;
+    border-radius: 12px;
+    border-bottom: 1px solid black;
     resize: none;
 }
 
 img {
     max-width: 100%;
     display: block;
+}
+
+p, textarea, label, .editable, button {
+    font-family: 'Libre Franklin', sans-serif;
+    font-size: 1.7rem;
+    line-height: 1.5;
+    margin: 10px 0;
 }
 
 .wrapper {

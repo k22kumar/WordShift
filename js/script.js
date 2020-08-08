@@ -57,7 +57,7 @@ wordShift.charCount = (textInput) => {
 wordShift.minMax = () => {
   document.getElementById("minMax").addEventListener("click", () => {
     wordShift.minimize = !wordShift.minimize;
-    console.log(wordShift.minimize);
+    document.querySelector(".minMax i").classList.toggle("maximize")
   });
 }
 
@@ -78,12 +78,10 @@ wordShift.optimize = () => {
       // for each word if it is in the EDITABLE format:
       //  [a-z] (0 or 1 instance of "-") OR (0 or 1 instance of "'") followed by [a-z]
       // if its also greater than 3 characters
-      // console.log(word, word.length > 3 && pattern.test(word));
       let editObj = {};
       const brokenDownWord = wordShift.breakDown(word);
       let minLength = 3;
       if(!wordShift.minimize) {
-        console.log(wordShift.minimize);
         minLength = 2;
       }
       if (brokenDownWord[1].length > minLength && pattern.test(word)) {
@@ -108,7 +106,6 @@ wordShift.optimize = () => {
     let promiseArray = [];
     for(let i = 0; i<wordShift.editable.length; i++){
       if(wordShift.editable[i].edit === true) {
-        
         promiseArray.push(wordShift.getNewWords(i, wordShift.editable[i].cleanWord));
       }
     }
@@ -117,28 +114,39 @@ wordShift.optimize = () => {
       response.map((wordListResponse) => {
         // this returns a wordList response array where the first value is the 
         // specfic index of the word that wordList belongs to
-        const wordindex = wordListResponse[0];
+        const wordIndex = wordListResponse[0];
         // if the wordlist has more then one word, then add the original
-        // if (wordListResponse[0] > 0) {
-          // wordListResponse[1].push(wordShift.editable[wordindex].cleanWord);
-        // }
-        
-        wordShift.editable[wordindex].wordList = wordListResponse[1];
+        wordShift.editable[wordIndex].wordList = wordListResponse[1];
         // add the original word to wordlist
-        wordShift.editable[wordindex].wordList.push({
-          word: wordShift.editable[wordindex].cleanWord 
-        });
-        wordShift.editable[wordindex].wordList.sort(
-          (a, b) => a.word.split(" ").join("").length - b.word.split(" ").join("").length
-        );
+        wordShift.editable[wordIndex].wordList.push(wordShift.editable[wordIndex].cleanWord);
+        
+          wordShift.editable[wordIndex].wordList.sort((a, b) => {
+            if(wordShift.minimize === true){
+              return a.split(" ").join("").length - b.split(" ").join("").length
+            } else {
+              return b.split(" ").join("").length - a.split(" ").join("").length
+            }
+          });
+          if (wordIndex > 0) {
+            // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
+            console.log("famWOrd: ", wordShift.editable[wordIndex].word);
+            const prevWord = wordShift.editable[wordIndex - 1].word;
+            const prevPunc = prevWord.charAt(prevWord.length - 1);
+            // console.log("prevPunc", prevPunc);
+            if (prevPunc === "!" || prevPunc === "?" || prevPunc === ".") {
+              
+              const capitalized = wordShift.editable[wordIndex].wordList.map((synonym) => {
+                synonym = synonym.charAt(0).toUpperCase() + synonym.slice(1);
+                return synonym;
+              });
+              wordShift.editable[wordIndex].wordList = capitalized;
+            }
+          }
       })
       wordShift.displayEditable();
     });
-
-    console.log(wordShift.editable);
-
     // store that into an object in modifier array like so:
-    //  { maybe attach the original word
+    //  { attach the original word
     //      edit: true;
     //      wordList: [] list of words from thesauras api SORTED
     //      leftPunc: "leftparentheis" example
@@ -154,7 +162,7 @@ wordShift.optimize = () => {
     //  if edit === true check if it has a wordList of length > 0
     // if it does then stop and return a ptag with sentence string init
     //  THEN return a option with the first option as the lowest word and last is the original word
-      
+    console.log(wordShift.editable);
 })}; // Optimize end
 
   // this function breaks a word down into three components to seperate any potential puncuation marks that might be present in order to make a api call with the word with no puncuation
@@ -209,14 +217,23 @@ wordShift.optimize = () => {
   // theis function calls the datamuse api and returns an array of synonyms of the word requested
   wordShift.getNewWords = async (index, word) => {
     try {
-      let synArr = [];
+      // use proxy to solve same access issue
+      // const cors_api_url = "https://cors-anywhere.herokuapp.com/";
       const synonymResponse = await fetch(
         `https://api.datamuse.com/words?rel_syn=${word}`
       );
-      const jsonResponse = await synonymResponse.json();
-      
-      console.log("list", jsonResponse);
+      let jsonResponse = await synonymResponse.json();
+      // return words with lower/higher char counts if user toggles minimize/maximize
+      wordShift.minimize === true
+        ? jsonResponse = jsonResponse.filter((synonym) => {
+            return synonym.word.length <= word.length;
+          })
+        : (jsonResponse = jsonResponse.filter((synonym) => {
+            return synonym.word.length >= word.length;
+          }));
 
+      jsonResponse = jsonResponse.map((wordObj) => {return wordObj.word})
+      
       // return the index and the jsonResponse
       return [index, jsonResponse];
     } catch (err) {
@@ -256,9 +273,9 @@ wordShift.optimize = () => {
           for (let i = 0; i < editObj.wordList.length; i++) {
             const option = document.createElement("option");
             option.value =
-              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
+              editObj.leftPunc + editObj.wordList[i] + editObj.rightPunc;
             option.text =
-              editObj.leftPunc + editObj.wordList[i].word + editObj.rightPunc;
+              editObj.leftPunc + editObj.wordList[i] + editObj.rightPunc;
             wordChoice.appendChild(option);
           }
           document.getElementById("userEditable").appendChild(wordChoice);
@@ -272,17 +289,23 @@ wordShift.optimize = () => {
     // go through node by node, 
     document.getElementById("outputContainer").innerHTML = "";
     const childNodes = document.querySelectorAll(".editable");
-    console.log(childNodes);
     let newParagraph = ""
     for(let i=0; i< childNodes.length; i++){
       newParagraph += childNodes[i].value || childNodes[i].textContent;
     }
     const ptag = document.createElement("p");
     ptag.className = "output";
-    const node = document.createTextNode(newParagraph);
+    ptag.id = "output";
+    let node = document.createTextNode(newParagraph);
     ptag.appendChild(node);
+    const copy = document.createElement("button");
+    copy.className = "copy";
+    copy.id = "copy";
     document.getElementById("outputContainer").appendChild(ptag);
-    console.log(newParagraph);
+    document.getElementById("outputContainer").appendChild(copy);
+    node = document.createTextNode("Copy");
+    copy.appendChild(node);
+    wordShift.copyToClipBoard();
     wordShift.countText("outputContainer", "afterWord", "afterChar");
   }
   
@@ -291,10 +314,13 @@ wordShift.onSelectHandler = () => {
   parent.addEventListener("change", () => {
     wordShift.displayNewParagraph();
   });
+  
 }
 
-wordShift.copyToClipBoard = (elementId) => {
-    const input = document.getElementById(elementId);
+wordShift.copyToClipBoard = () => {
+  document.getElementById("copy").addEventListener("click", () => {
+    console.log("coping");
+    const input = document.getElementById("output");
     let isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
     if (isiOSDevice) {
@@ -304,10 +330,10 @@ wordShift.copyToClipBoard = (elementId) => {
       input.contentEditable = true;
       input.readOnly = false;
 
-      var range = document.createRange();
+      let range = document.createRange();
       range.selectNodeContents(input);
 
-      var selection = window.getSelection();
+      let selection = window.getSelection();
       selection.removeAllRanges();
       selection.addRange(range);
 
@@ -315,13 +341,15 @@ wordShift.copyToClipBoard = (elementId) => {
       input.contentEditable = editable;
       input.readOnly = readOnly;
     } else {
-      input.select();
+      // 
+      range.selectNodeContents(txt[0]);
     }
     document.execCommand("copy");
-};
-
-
-// document ready
-document.addEventListener("DOMContentLoaded", () => {
+  });
+  };
+  
+  
+  // document ready
+  document.addEventListener("DOMContentLoaded", () => {
   wordShift.init();
 });
