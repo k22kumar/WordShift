@@ -329,30 +329,39 @@ wordShift.copyToClipBoard = () => {
   document.getElementById("copy").addEventListener("click", () => {
     console.log("copying");
     const input = document.getElementById("output");
-    let isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
-    if (isiOSDevice) {
-      const editable = input.contentEditable;
-      const readOnly = input.readOnly;
-
-      input.contentEditable = true;
-      input.readOnly = false;
-
-      let range = document.createRange();
-      range.selectNodeContents(input);
-
-      let selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      input.setSelectionRange(0, 999999);
-      input.contentEditable = editable;
-      input.readOnly = readOnly;
-    } else {
-      // 
-      range.selectNodeContents(txt[0]);
-    }
+    let text = document.getElementById("output").innerText;
+    let tempInput = document.createElement("textarea");
+    document.body.appendChild(tempInput);
+    tempInput.value = text;
+    tempInput.select();
     document.execCommand("copy");
+    document.body.removeChild(tempInput);
+
+  //   let isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+  //   if (isiOSDevice) {
+  //     const editable = input.contentEditable;
+  //     const readOnly = input.readOnly;
+
+  //     input.contentEditable = true;
+  //     input.readOnly = false;
+
+  //     let range = document.createRange();
+  //     range.selectNodeContents(input);
+
+  //     let selection = window.getSelection();
+  //     selection.removeAllRanges();
+  //     selection.addRange(range);
+
+  //     input.setSelectionRange(0, 999999);
+  //     input.contentEditable = editable;
+  //     input.readOnly = readOnly;
+  //   } else {
+  //     // 
+  //     range.selectNodeContents(txt[0]);
+  //   }
+  //   document.execCommand("copy");
   });
   };
   

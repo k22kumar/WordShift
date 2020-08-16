@@ -447,6 +447,8 @@ p, textarea, label, .editable, button {
 }
 
 .editable {
+  padding: 5px;
+  margin: 5px;
   display: inline;
   word-wrap: break-word;
   text-align: center;
