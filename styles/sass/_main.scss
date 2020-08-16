@@ -10,14 +10,72 @@
         text-align: center;
     }
 }
+
 .minMax {
+    color: $buttonSide;
     border-radius: 50%;
     padding: 10px;
     font-size: 4rem;
+    transition: all 0.4s;
     i {
-        transition: all 0.3s;
+        transition: all 0.4s;
+    }
+    &:hover, &:focus {
+        background-color: $buttonSide;
+        color: white;
     }
 }
+
 .maximize {
     transform: rotatez(180deg);
+}
+
+.wordCharContainer {
+    width: 70%;
+    justify-content: space-evenly;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.finalText {
+    margin-bottom: 0;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(0,0,0,0.7);
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        80% {
+            transform: rotate(360deg);
+        }
+
+        90% {
+            transform: scale(2);
+        }
+
+        100% {
+            transform: scale(1);
+            
+        }
+    }
+    i {
+        animation: rotation 2s ease-out infinite;
+        font-size: 6rem;
+    }
+    p{
+        font-size: 3rem;
+    }
+}
+
+.hide {
+    display: none;
 }
