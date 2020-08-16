@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
+    <div id="loader" class="flexParent flexColumn loader hide"><i aria-hidden="true" class="fas fa-cog"></i><p id="loadMessage" >Loading ...</p></div>
     <header>
         <h1>Word Shift</h1>
     </header>
     <main class="wrapper">
         <section class="flexParent flexColumn">
-            <p>WordShift is an app to increase or decrease the character count of a paragraph. Simply type or paste a paragraph into
-            the textbox, change the direction of the arrow up for more characters or down for less, and hit optimize. Not all
+            <p>WordShift is an app to increase or decrease the character count of a paragraph. This is great to reduce tweets or to pump up your essays. Not all
             suggestions will fit your needs so make sure to double check for grammar!</p>
-            <label for="userInput">Type or paste your text to get started!</label>
-            <ul class="flexParent">
+            <h2>Step 1: Type or paste your text into the textbox below</h2>
+            <ul class="flexParent wordCharContainer">
                 <li class="beforeWord">
                     <p id="beforeWord">Words: 0</p>
                 </li>
@@ -29,7 +29,9 @@
                     <p id="beforeChar">Characters: 0</p>
                 </li>
             </ul>
+            <label for="userInput">Your original text to optimize</label>
             <textarea name="userInput" id="userInput" spellcheck="true" rows="6" placeholder="Type or paste your paragraph to optimize here!"></textarea>
+            <h2>Step 2: Toggle arrow up/down to maximize/minimize character count, then hit optimize!</h2>
             <button class="flexParent minMax" id="minMax" aria-label="Click to toggle between lower or higher character counts. Default is minimum.">
                 <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
             </button>
@@ -39,7 +41,7 @@
             <div class="userEditable" id="userEditable"></div>
         </section>
         <section class="flexParent flexColumn">
-            <ul class="flexParent">
+            <ul class="flexParent wordCharContainer">
                 <li class="afterWord">
                     <p id="afterWord"></p>
                 </li>
@@ -52,8 +54,8 @@
             
         </section>
     </main>
-    <footer>
-
+    <footer class="flexParent">
+        <p>© 2020 Designed and Coded by <a href="https://kajanthkumar.com/" target="blank">Kajanth Kumar</a></p>
     </footer>
 <!-- custom JS -->
 <script src="./js/script.js"></script>

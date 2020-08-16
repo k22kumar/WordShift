@@ -241,6 +241,10 @@ html {
   color: white;
 }
 
+body {
+  position: relative;
+}
+
 header {
   margin: 25px 0;
 }
@@ -251,9 +255,16 @@ p, ul, li, h1, h2, h3 {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 4rem;
   text-align: center;
   font-family: 'Rock Salt', cursive;
+}
+
+h2 {
+  font-size: 2.3rem;
+  font-family: 'Libre Franklin', sans-serif;
+  text-align: center;
+  margin: 30px 0;
 }
 
 ul {
@@ -264,13 +275,13 @@ section {
   margin: 20px 0;
 }
 
+/* credit to https://codepen.io/kathykato/pen/gOOjgmP*/
 button {
   position: relative;
   display: inline-block;
   cursor: pointer;
   outline: none;
   border: 0;
-  vertical-align: middle;
   text-decoration: none;
   font-size: inherit;
   font-family: inherit;
@@ -313,13 +324,14 @@ button.optimize::before, button.minmax::before, button.copy::before {
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 
-button.optimize:hover, button.minmax:hover, button.copy:hover {
+button.optimize:hover, button.optimize:focus, button.minmax:hover, button.minmax:focus, button.copy:hover, button.copy:focus {
   background: white;
+  color: black;
   -webkit-transform: translate(0, 0.25em);
           transform: translate(0, 0.25em);
 }
 
-button.optimize:hover::before, button.minmax:hover::before, button.copy:hover::before {
+button.optimize:hover::before, button.optimize:focus::before, button.minmax:hover::before, button.minmax:focus::before, button.copy:hover::before, button.copy:focus::before {
   -webkit-box-shadow: 0 0 0 2px #c40021, 0 0.5em 0 0 #ca748200;
           box-shadow: 0 0 0 2px #c40021, 0 0.5em 0 0 #ca748200;
   -webkit-transform: translate3d(0, 0.5em, -1em);
@@ -401,6 +413,35 @@ p, textarea, label, .editable, button {
   flex-wrap: wrap;
 }
 
+.fadeInBottom {
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-name: fadeInBottom;
+          animation-name: fadeInBottom;
+}
+
+@-webkit-keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .userOutput {
   width: 80%;
 }
@@ -416,17 +457,109 @@ p, textarea, label, .editable, button {
 }
 
 .minMax {
+  color: #FE4A49;
   border-radius: 50%;
   padding: 10px;
   font-size: 4rem;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
 }
 
 .minMax i {
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.minMax:hover, .minMax:focus {
+  background-color: #FE4A49;
+  color: white;
 }
 
 .maximize {
   -webkit-transform: rotatez(180deg);
           transform: rotatez(180deg);
+}
+
+.wordCharContainer {
+  width: 70%;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.finalText {
+  margin-bottom: 0;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+@-webkit-keyframes rotation {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  80% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+  90% {
+    -webkit-transform: scale(2);
+            transform: scale(2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  80% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+  90% {
+    -webkit-transform: scale(2);
+            transform: scale(2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+.loader i {
+  -webkit-animation: rotation 2s ease-out infinite;
+          animation: rotation 2s ease-out infinite;
+  font-size: 6rem;
+}
+
+.loader p {
+  font-size: 3rem;
+}
+
+.hide {
+  display: none;
+}
+
+footer {
+  background-color: black;
+}
+
+footer p, footer a {
+  color: white;
+  font-weight: 600;
 }

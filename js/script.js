@@ -57,13 +57,14 @@ wordShift.charCount = (textInput) => {
 wordShift.minMax = () => {
   document.getElementById("minMax").addEventListener("click", () => {
     wordShift.minimize = !wordShift.minimize;
-    document.querySelector(".minMax i").classList.toggle("maximize")
+    document.querySelector(".minMax i").classList.toggle("maximize");
   });
 }
 
 // function that takes a string and optimizes it for more or less characters
 wordShift.optimize = () => {
   document.getElementById("optimize").addEventListener("click", () => {
+    document.getElementById("loader").classList.remove("hide");
     document.getElementById("userEditable").innerHTML = "";
     // get the string
     // break it into "words" anything that has spaces
@@ -129,10 +130,8 @@ wordShift.optimize = () => {
           });
           if (wordIndex > 0) {
             // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
-            console.log("famWOrd: ", wordShift.editable[wordIndex].word);
             const prevWord = wordShift.editable[wordIndex - 1].word;
             const prevPunc = prevWord.charAt(prevWord.length - 1);
-            // console.log("prevPunc", prevPunc);
             if (prevPunc === "!" || prevPunc === "?" || prevPunc === ".") {
               
               const capitalized = wordShift.editable[wordIndex].wordList.map((synonym) => {
@@ -144,6 +143,7 @@ wordShift.optimize = () => {
           }
       })
       wordShift.displayEditable();
+      document.getElementById("loader").classList.add("hide");
     });
     // store that into an object in modifier array like so:
     //  { attach the original word
@@ -162,7 +162,6 @@ wordShift.optimize = () => {
     //  if edit === true check if it has a wordList of length > 0
     // if it does then stop and return a ptag with sentence string init
     //  THEN return a option with the first option as the lowest word and last is the original word
-    console.log(wordShift.editable);
 })}; // Optimize end
 
   // this function breaks a word down into three components to seperate any potential puncuation marks that might be present in order to make a api call with the word with no puncuation
@@ -175,7 +174,6 @@ wordShift.optimize = () => {
     // LEFT PUNC TEST
     // if the first character is an alphabetic letter then there is no left puncuation
     if (pattern.test(word.charAt(0)) === false) {
-      // console.log(`word: ${word} no left Punc`);
       leftPunc = "";
       cleanWord = word;
     } else {
@@ -186,8 +184,7 @@ wordShift.optimize = () => {
         if (pattern.test(word.charAt(i)) === false) {
           leftPunc = word.slice(0, i);
           cleanWord = word.slice(i);
-          // console.log(`word: ${word} has left Punc until ${i}. cleanWord: ${cleanWord}`);
-          break;
+         break;
         }
       }
     }
@@ -196,16 +193,13 @@ wordShift.optimize = () => {
     // if the last character is not an alphabetic letter then there is no right puncuation
     if (pattern.test(cleanWord.charAt(cleanWord.length - 1)) === false) {
       rightPunc = "";
-      // console.log(`word: ${word} no right Punc`);
-    } else {
+      } else {
       //So the last character IS a puncuation mark start -2 because last is already a puncuation
       for (let i = cleanWord.length - 2; i > 0; i--) {
         // if ther is punctuation go until there is no puncuation, and then store right punc
         if (pattern.test(cleanWord.charAt(i)) === false) {
-          // console.log(cleanWord.charAt(i));
           rightPunc = cleanWord.slice(i + 1);
           cleanWord = cleanWord.slice(0, i + 1);
-          // console.log(`word: ${word} has right Punc until ${i}. cleanWord: ${cleanWord}`);
           break;
         }
       }
@@ -237,12 +231,21 @@ wordShift.optimize = () => {
       // return the index and the jsonResponse
       return [index, jsonResponse];
     } catch (err) {
-      console.log(err);
+      const loadMessage = document.getElementById("loadMessage").firstChild;
+      loadMessage.textContent = `Encountered error: ${err} Please refresh.`;
     }
   };
 
   wordShift.displayEditable = () => {
+    const htag = document.createElement("h2");
+    const titleText = document.createTextNode(
+      "Step 3: Choose your suggested word replacements"
+    );
+    htag.appendChild(titleText);
+    document.getElementById("userEditable").appendChild(htag);
+
     let paragraph ="";
+
     wordShift.editable.map((editObj, index) => {
       if (editObj.edit === false) {
         paragraph = paragraph + " " + editObj.word;
@@ -250,7 +253,7 @@ wordShift.optimize = () => {
         // if paragraph !== "" insert paragraph, reset the pargraph back to "" then make an option and insert that option
         if(paragraph !== ""){
           const ptag = document.createElement("p");
-          ptag.className = "editable";
+          ptag.className = "editable fadeInBottom";
           const node = document.createTextNode(paragraph + " ");
           ptag.appendChild(node);
           document.getElementById("userEditable").appendChild(ptag);
@@ -261,7 +264,7 @@ wordShift.optimize = () => {
            
            paragraph = paragraph + " " + editObj.word;
            const ptag = document.createElement("p");
-           ptag.className = "editable";
+           ptag.className = "editable fadeInBottom";
            const node = document.createTextNode(paragraph + " ");
            ptag.appendChild(node);
            document.getElementById("userEditable").appendChild(ptag);
@@ -269,7 +272,7 @@ wordShift.optimize = () => {
 
          } else {
           const wordChoice = document.createElement("select");
-          wordChoice.className = "editable";
+          wordChoice.className = "editable fadeInBottom";
           for (let i = 0; i < editObj.wordList.length; i++) {
             const option = document.createElement("option");
             option.value =
@@ -286,8 +289,14 @@ wordShift.optimize = () => {
   };
 
   wordShift.displayNewParagraph = () => {
-    // go through node by node, 
     document.getElementById("outputContainer").innerHTML = "";
+
+    const htag = document.createElement("h2");
+    htag.classList.add("finalText");
+    const titleText = document.createTextNode("Final Text");
+    htag.appendChild(titleText);
+    document.getElementById("userEditable").appendChild(htag);
+
     const childNodes = document.querySelectorAll(".editable");
     let newParagraph = ""
     for(let i=0; i< childNodes.length; i++){
@@ -314,12 +323,11 @@ wordShift.onSelectHandler = () => {
   parent.addEventListener("change", () => {
     wordShift.displayNewParagraph();
   });
-  
 }
 
 wordShift.copyToClipBoard = () => {
   document.getElementById("copy").addEventListener("click", () => {
-    console.log("coping");
+    console.log("copying");
     const input = document.getElementById("output");
     let isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
