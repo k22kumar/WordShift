@@ -18,7 +18,7 @@ p, ul, li, h1, h2, h3 {
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: 6rem;
     text-align: center;
     font-family: 'Rock Salt', cursive;
 }
@@ -48,6 +48,7 @@ button {
     text-decoration: none;
     font-size: inherit;
     font-family: inherit;
+    transition: all 0.3s;
     &.optimize, &.minmax, &.copy {
         font-weight: 600;
         color: $normalFont;
@@ -127,7 +128,7 @@ p, textarea, label, .editable, button {
 
 .wrapper {
     margin: 0 auto;
-    width: 80%;
+    width: 60%;
     max-width: 1280px;
 }
 
@@ -166,5 +167,11 @@ p, textarea, label, .editable, button {
     to { opacity: 1 }
 }
 
+.disabled {
+    background-color: grey;
+    box-shadow: none;
+    pointer-events: none;
+    cursor: not-allowed;
+}
 
 
