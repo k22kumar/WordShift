@@ -64,19 +64,19 @@ wordShift.minMax = () => {
 };
 
 wordShift.checkEmpyInput = () => {
-  if(document.getElementById("userInput").value !== ""){
+  if (document.getElementById("userInput").value !== "") {
     document.getElementById("optimize").classList.remove("disabled");
     document.getElementById("optimize").classList.add("optimize");
   } else {
     document.getElementById("optimize").classList.add("disabled");
     document.getElementById("optimize").classList.remove("optimize");
   }
-}
+};
 
 // function that takes a string and optimizes it for more or less characters
 wordShift.optimize = () => {
   document.getElementById("optimize").addEventListener("click", () => {
-      document.getElementById("loader").classList.remove("hide");
+    document.getElementById("loader").classList.remove("hide");
     document.getElementById("userEditable").innerHTML = "";
     // get the string
     // break it into "words" anything that has spaces
@@ -143,22 +143,27 @@ wordShift.optimize = () => {
             return b.split(" ").join("").length - a.split(" ").join("").length;
           }
         });
-          // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
-          let prevWord = "";
-          let prevPunc = "";
-          if (wordIndex > 0) {
-            prevWord = wordShift.editable[wordIndex - 1].word || null;
-            prevPunc = prevWord.charAt(prevWord.length - 1) || null;
-          }
-          if (prevPunc === "!" || prevPunc === "?" || prevPunc === "." || prevPunc === "") {
-            const capitalized = wordShift.editable[wordIndex].wordList.map(
-              (synonym) => {
-                synonym = synonym.charAt(0).toUpperCase() + synonym.slice(1);
-                return synonym;
-              }
-            );
-            wordShift.editable[wordIndex].wordList = capitalized;
-          }
+        // get the last words previous puncuation, if its a ".","?", or "!" then auto capitalize the suggested words
+        let prevWord = "";
+        let prevPunc = "";
+        if (wordIndex > 0) {
+          prevWord = wordShift.editable[wordIndex - 1].word || null;
+          prevPunc = prevWord.charAt(prevWord.length - 1) || null;
+        }
+        if (
+          prevPunc === "!" ||
+          prevPunc === "?" ||
+          prevPunc === "." ||
+          prevPunc === ""
+        ) {
+          const capitalized = wordShift.editable[wordIndex].wordList.map(
+            (synonym) => {
+              synonym = synonym.charAt(0).toUpperCase() + synonym.slice(1);
+              return synonym;
+            }
+          );
+          wordShift.editable[wordIndex].wordList = capitalized;
+        }
       });
       wordShift.displayEditable();
       document.getElementById("loader").classList.add("hide");

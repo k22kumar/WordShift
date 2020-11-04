@@ -2,15 +2,23 @@
 .userOutput {
     width: 80%;
 }
+
+.intro {
+    text-align: center;
+}
+
 .editable {
-    padding: 5px;
-    margin: 5px;
+    margin: 10px 0;
     display:inline;
     word-wrap: break-word;
     text-align: center;
     option {
         text-align: center;
     }
+}
+
+select.editable {
+    margin: 10px;
 }
 
 .minMax {
