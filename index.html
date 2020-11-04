@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,19 +8,24 @@
     <!-- FONT AWESOME -->
     <script src="https://kit.fontawesome.com/63b84c9d87.js" crossorigin="anonymous"></script>
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Rock+Salt&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin&family=Sigmar+One&display=swap"
+        rel="stylesheet">
     <!-- link to custom css -->
     <link rel="stylesheet" href="./styles/style.css">
 </head>
+
 <body>
-    <div id="loader" class="flexParent flexColumn loader hide"><i aria-hidden="true" class="fas fa-cog"></i><p id="loadMessage" >Loading ...</p></div>
+    <div id="loader" class="flexParent flexColumn loader hide"><i aria-hidden="true" class="fas fa-cog"></i>
+        <p id="loadMessage">Loading ...</p>
+    </div>
     <header>
         <h1>Word Shift</h1>
     </header>
     <main class="wrapper">
         <section class="flexParent flexColumn">
-            <p>WordShift is an app to increase or decrease the character count of a paragraph. This is great to reduce tweets or to pump up your essays. Not all
-            suggestions will fit your needs so make sure to double check for grammar!</p>
+            <p class="intro">WordShift is an app to increase or decrease the character count of a paragraph. This is useful to reduce
+                tweets or to pump up your essays. Not all
+                suggestions will fit your needs so make sure to double check for grammar!</p>
             <h2>Step 1: Type or paste your text into the textbox below</h2>
             <ul class="flexParent wordCharContainer">
                 <li class="beforeWord">
@@ -30,12 +36,14 @@
                 </li>
             </ul>
             <label for="userInput">Your original text to optimize</label>
-            <textarea name="userInput" id="userInput" spellcheck="true" rows="6" placeholder="Type or paste your paragraph to optimize here!"></textarea>
+            <textarea name="userInput" id="userInput" spellcheck="true" rows="6"
+                placeholder="Type or paste your paragraph to optimize here!"></textarea>
             <h2>Step 2: Toggle arrow up/down to maximize/minimize character count, then hit optimize!</h2>
-            <button class="flexParent minMax" id="minMax" aria-label="Click to toggle between lower or higher character counts. Default is minimum.">
+            <button class="flexParent minMax" id="minMax"
+                aria-label="Click to toggle between lower or higher character counts. Default is minimum.">
                 <i class="fas fa-arrow-circle-down" aria-hidden="true"></i>
             </button>
-            <button class="optimize" id="optimize">Optimize</button>
+            <button class="disabled" id="optimize">Optimize</button>
         </section>
         <section class="flexParent">
             <div class="userEditable" id="userEditable"></div>
@@ -51,13 +59,15 @@
             </ul>
             <div class="outputContainer flexParent flexColumn" id="outputContainer">
             </div>
-            
+
         </section>
     </main>
-    <footer class="flexParent">
+    <footer class="flexParent flexColumn">
         <p>© 2020 Designed and Coded by <a href="https://kajanthkumar.com/" target="blank">Kajanth Kumar</a></p>
+        <p>Powered by <a href="https://www.datamuse.com/api/" target="blank">Datamuse API</a></p>
     </footer>
-<!-- custom JS -->
-<script src="./js/script.js"></script>
+    <!-- custom JS -->
+    <script src="./js/script.js"></script>
 </body>
+
 </html>

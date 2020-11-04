@@ -255,9 +255,9 @@ p, ul, li, h1, h2, h3 {
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 6rem;
   text-align: center;
-  font-family: 'Rock Salt', cursive;
+  font-family: 'Sigmar One', cursive;
 }
 
 h2 {
@@ -285,6 +285,8 @@ button {
   text-decoration: none;
   font-size: inherit;
   font-family: inherit;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 button.optimize, button.minmax, button.copy {
@@ -385,7 +387,7 @@ p, textarea, label, .editable, button {
 
 .wrapper {
   margin: 0 auto;
-  width: 80%;
+  width: 60%;
   max-width: 1280px;
 }
 
@@ -442,13 +444,24 @@ p, textarea, label, .editable, button {
   }
 }
 
+.disabled {
+  background-color: grey;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .userOutput {
   width: 80%;
 }
 
+.intro {
+  text-align: center;
+}
+
 .editable {
-  padding: 5px;
-  margin: 5px;
+  margin: 10px 0;
   display: inline;
   word-wrap: break-word;
   text-align: center;
@@ -456,6 +469,10 @@ p, textarea, label, .editable, button {
 
 .editable option {
   text-align: center;
+}
+
+select.editable {
+  margin: 10px;
 }
 
 .minMax {
@@ -559,9 +576,12 @@ p, textarea, label, .editable, button {
 
 footer {
   background-color: black;
+  text-align: center;
+  padding: 10px 5px;
 }
 
 footer p, footer a {
   color: white;
   font-weight: 600;
+  margin: 0;
 }
